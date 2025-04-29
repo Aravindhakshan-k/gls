@@ -1306,22 +1306,22 @@ demo = {
         marker.setMap(map);
     },
 
-    showNotification: function(from, align) {
-        color = Math.floor((Math.random() * 4) + 1);
+    // showNotification: function(from, align) {
+    //     color = Math.floor((Math.random() * 4) + 1);
 
-        $.notify({
-            icon: "nc-icon nc-app",
-            message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful bootstrap 4 dashboard for every web developer."
+    //     $.notify({
+    //         icon: "nc-icon nc-app",
+    //         message: "Welcome to <b>Light Bootstrap Dashboard</b> - a beautiful bootstrap 4 dashboard for every web developer."
 
-        }, {
-            type: type[color],
-            timer: 8000,
-            placement: {
-                from: from,
-                align: align
-            }
-        });
-    },
+    //     }, {
+    //         type: type[color],
+    //         timer: 8000,
+    //         placement: {
+    //             from: from,
+    //             align: align
+    //         }
+    //     });
+    // },
 
     // Sweet Alerts
 

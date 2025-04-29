@@ -3,5 +3,6 @@ from django.urls import path
 from dashboard import views
 
 urlpatterns = [
-    path('', views.dashboard, name='dashboard'),  # Include the URLs from the login app
+    path('', views.dashboard, name='dashboard'),
+    path('/logout', views.logout_view, name='logout'),
 ]
