@@ -7,11 +7,14 @@ def login_view(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
+        print(username)
+        print(password)
+
         user = authenticate(request, username=username, password=password)
         print(user)
         if user is not None:
             login(request, user)
-            return redirect('dashboard')  # Change 'dashboard' to your actual homepage URL name
+            return redirect('dashboard')
         else:
             messages.error(request, 'Invalid username or password')
     return render(request, 'login/login.html')
