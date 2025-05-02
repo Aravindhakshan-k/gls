@@ -1269,52 +1269,35 @@
                     </a>
                 </div>
                 <div class="modal-body">
-                    <form action="#" class="form-validate is-alter">
+                    <form class="form-validate is-alter" id="customeraddform" method="POST">
                     <div class="form-group">
-                        <label class="form-label" for="full-name">Full Name</label>
+                        <label class="form-label" for="first_name">First Name</label>
                         <div class="form-control-wrap">
-                        <input type="text" class="form-control" id="full-name" required>
+                        <input type="text" class="form-control" name="first_name" id="first_name" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="email-address">Email address</label>
+                        <label class="form-label" for="last_name">Last Name</label>
                         <div class="form-control-wrap">
-                        <input type="text" class="form-control" id="email-address" required>
+                        <input type="text" class="form-control" name="last_name" id="last_name" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="phone-no">Phone No</label>
+                        <label class="form-label" for="email">Email address</label>
                         <div class="form-control-wrap">
-                        <input type="text" class="form-control" id="phone-no">
+                        <input type="email" class="form-control" name="email" id="email" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Communication</label>
-                        <ul class="custom-control-group g-3 align-center">
-                        <li>
-                            <div class="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="com-email">
-                            <label class="custom-control-label" for="com-email">Email</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="com-sms">
-                            <label class="custom-control-label" for="com-sms">SMS</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="com-phone">
-                            <label class="custom-control-label" for="com-phone">Phone</label>
-                            </div>
-                        </li>
-                        </ul>
+                        <label class="form-label" for="phone_number">Phone No</label>
+                        <div class="form-control-wrap">
+                        <input type="number" class="form-control" name="phone_number" id="phone_number">
+                        </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="pay-amount">Amount</label>
+                        <label class="form-label" for="address">Address</label>
                         <div class="form-control-wrap">
-                        <input type="number" class="form-control" id="pay-amount">
+                        <input type="text" class="form-control" name="address" id="address">
                         </div>
                     </div>
                     <div class="form-group">
@@ -1325,4 +1308,57 @@
                 </div>
             </div>
             </div>
+{% endblock %}
+
+{% block foot_script %}
+<script>
+$("#customeraddform").validate({
+    rules: {
+        email: {
+            required: true
+        },
+    },
+    messages: {
+        email: {
+            required: "Please enter email address",
+        },
+    },
+  submitHandler: function(form) {
+    var data = new FormData($('form').get(0));
+    $.ajax({
+        url: 'customer/ajax_add_customer',
+        data: data,
+        cache: false,
+        processData: false,
+        contentType: false,
+        method: 'POST',
+        dataType: 'json',
+        beforeSend: function() {
+        $(".page_loading").show();
+        },
+        success: function (data) {
+            $(".page_loading").hide();
+
+            if(data['status']==1) {
+                showToast(data['message'], "success",{ 
+                position: "top-right" 
+                });
+                setTimeout(function() {
+                    window.location.href = "/"+data['redirect_to'];
+                }, 1500);
+            } else {
+                toastr.clear();
+                showToast(data['message'], "error",{ 
+                    position: "top-right" 
+                });
+                grecaptcha.reset();
+            }
+            
+        }
+    });
+    return false;
+  }
+});
+
+</script>
 {% endblock %}
