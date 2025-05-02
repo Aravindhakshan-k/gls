@@ -4,7 +4,7 @@ from customer.models import Customer
 class Order(models.Model):
     customer        = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='orders')
     order_number    = models.CharField(max_length=20, unique=True)
-    status          = models.CharField(max_length=20, unique=True)
+    status          = models.CharField(max_length=20, unique=True, default='Pending')
     delivery_date   = models.DateField()
     created_at      = models.DateTimeField(auto_now_add=True)
     updated_at      = models.DateTimeField(auto_now=True)

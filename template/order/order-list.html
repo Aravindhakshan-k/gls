@@ -1622,52 +1622,35 @@
                     </a>
                 </div>
                 <div class="modal-body">
-                    <form action="#" class="form-validate is-alter">
+                    <form action="#" class="form-validate is-alter" id="orderaddform" enctype="multipart/form-data">
+                      {% csrf_token %}
                     <div class="form-group">
-                        <label class="form-label" for="full-name">Customer Name</label>
+                      <label class="form-label" for="customer-select">Customer Name</label>
+                      <div class="form-control-wrap">
+                        <select class="form-control select2" id="customer-select" name="customer_id" required>
+                          <option value="">Select a customer</option>
+                          {% for customer in customers %}
+                            <option value="{{ customer.id }}">{{ customer.first_name }}{{ customer.last_name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="order-number">Order Number</label>
                         <div class="form-control-wrap">
-                        <input type="text" class="form-control" id="full-name" required>
+                        <input type="number" class="form-control" name="order_number" id="order-number" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="email-address">Order Number</label>
+                        <label class="form-label" for="delivery_date">Delivery Date</label>
                         <div class="form-control-wrap">
-                        <input type="number" class="form-control" id="email-address" required>
+                        <input type="date" class="form-control" id="delivery_date" name="delivery_date" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="phone-no">Phone No</label>
+                        <label class="form-label" for="note">Note</label>
                         <div class="form-control-wrap">
-                        <input type="text" class="form-control" id="phone-no">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Communication</label>
-                        <ul class="custom-control-group g-3 align-center">
-                        <li>
-                            <div class="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="com-email">
-                            <label class="custom-control-label" for="com-email">Email</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="com-sms">
-                            <label class="custom-control-label" for="com-sms">SMS</label>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="custom-control custom-control-sm custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="com-phone">
-                            <label class="custom-control-label" for="com-phone">Phone</label>
-                            </div>
-                        </li>
-                        </ul>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="pay-amount">Amount</label>
-                        <div class="form-control-wrap">
-                        <input type="number" class="form-control" id="pay-amount">
+                        <input type="text" class="form-control" id="note" name="note">
                         </div>
                     </div>
                     <div class="form-group">
@@ -1678,4 +1661,62 @@
                 </div>
             </div>
             </div>
+{% endblock %}
+{% block foot_script %}
+<script>
+$("#orderaddform").validate({
+    rules: {
+        order_number: {
+            required: true
+        },
+    },
+    messages: {
+        order_number: {
+            required: "Please enter order number",
+        },
+    },
+  submitHandler: function(form) {
+    var data = new FormData($('form').get(0));
+    $.ajax({
+        url: '/order/ajax-add-order',
+        data: data,
+        cache: false,
+        processData: false,
+        contentType: false,
+        method: 'POST',
+        dataType: 'json',
+        beforeSend: function() {
+        $(".page_loading").show();
+        },
+        success: function (data) {
+            $(".page_loading").hide();
+
+            if(data['status']=="success") {
+                $.toast({
+                    title: "Success!",
+                    message: data['message'],
+                    position: "top-right",
+                    type: "success",
+                    duration: 5000
+                });
+                setTimeout(function() {
+                    window.location.href = "/order/order-list";
+                }, 1500);
+            } else {
+                toastr.clear();
+                $.toast({
+                    title: "Error!",
+                    message: data['message'],
+                    position: "top-right",
+                    type: "error",
+                    duration: 5000
+                });
+              } 
+        }
+    });
+    return false;
+  }
+});
+
+</script>
 {% endblock %}
