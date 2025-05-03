@@ -16,8 +16,6 @@ def ajax_add_order(request):
         delivery_date = request.POST.get('delivery_date')
         note = request.POST.get('note')
 
-        print(customer_id, order_number, delivery_date, note)
-
         try:
             order = Order.objects.create(
                 customer_id=customer_id,
