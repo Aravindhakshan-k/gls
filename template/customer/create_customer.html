@@ -1,0 +1,238 @@
+{% extends "includes/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .image-preview {
+        margin-top: 10px;
+        min-height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed #dbdfea;
+        border-radius: 4px;
+        padding: 10px;
+        background-color: #f5f6fa;
+        cursor: pointer;
+    }
+    .image-preview img {
+        max-width: 100%;
+        max-height: 150px;
+        object-fit: contain;
+    }
+    .image-preview:hover {
+        border-color: #6576ff;
+        background-color: #f0f3ff;
+    }
+    .upload-hint {
+        display: block;
+        margin-top: 5px;
+        font-size: 12px;
+        color: #8094ae;
+    }
+    .form-file-input {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+</style>
+{% endblock %}
+
+{% block body_content %}
+<div class="nk-content">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block-head nk-block-head-sm">
+                    <div class="nk-block-between">
+                        <div class="nk-block-head-content">
+                            <h3 class="nk-block-title page-title">Create Customer</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="nk-block">
+                    <div class="card">
+                        <div class="card-inner">
+                            <form id="customerForm">
+                                {% csrf_token %}
+                                
+                                <div class="row g-4">
+                                    <!-- Core Info -->
+                                    <div class="form-group">
+                                        <input type="hidden" class="form-control" name="account_type" value="customer" required>
+                                    </div>
+                                    
+                                    <!-- Customer Image - First section -->
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Customer Image</label>
+                                            <div class="form-control-wrap">
+                                                <div class="form-file">
+                                                    <input type="file" class="form-file-input" id="customerImage" name="customer_image" accept="image/*">
+                                                    <div id="imagePreview" class="image-preview">
+                                                        <img src="{% static 'images/avatar-placeholder.png' %}" alt="Customer Image Preview">
+                                                    </div>
+                                                    <span class="upload-hint">Click on the image to upload or change. Max size: 2MB (JPG, PNG, GIF)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Main Info -->
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Name</label>
+                                            <input type="text" class="form-control" name="name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Print Name</label>
+                                            <input type="text" class="form-control" name="print_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" name="email">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Contact Person Name</label>
+                                            <input type="text" class="form-control" name="contact_person_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Mobile Number</label>
+                                            <input type="text" class="form-control" name="mobile_number">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Door No</label>
+                                            <input type="text" class="form-control" name="door_no">
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Contact/Address -->
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                            <label class="form-label">Address</label>
+                                            <input type="text" class="form-control" name="address">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">City</label>
+                                            <input type="text" class="form-control" name="city">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Area</label>
+                                            <input type="text" class="form-control" name="area">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Pincode</label>
+                                            <input type="text" class="form-control" name="pincode">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Date of Birth</label>
+                                            <input type="date" class="form-control" name="dob">
+                                        </div>
+                                    </div>
+
+                                    <!-- Additional Fields -->
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Anniversary Date</label>
+                                            <input type="date" class="form-control" name="anniversary_date">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">GST No</label>
+                                            <input type="text" class="form-control" name="gst_no">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">PAN Number</label>
+                                            <input type="text" class="form-control" name="pan_number">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label class="form-label">Opening Balance Amount</label>
+                                            <input type="number" step="0.01" class="form-control" name="opening_balance_amount">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Save Customer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block foot_script %}
+<!-- Include the common image upload JS -->
+<script src="{% static 'js/common/image-upload.js' %}"></script>
+<script>
+$(document).ready(function() {
+    // Initialize image upload with preview
+    initImageUploadWithPreview('#customerImage', {
+        previewSelector: '#imagePreview',
+        defaultImageUrl: "{% static 'images/avatar-placeholder.png' %}",
+        maxSizeMB: 2,
+        onFileInvalid: function(message) {
+            // You can use toastr or other notification library here
+            alert(message);
+        }
+    });
+
+    // Form submission
+    $('#customerForm').on('submit', function(e) {
+        e.preventDefault();
+        
+        var formData = new FormData(this);
+        
+        $.ajax({
+            url: "{% url 'ajax_add_customer' %}",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if(response.status === "success") {
+                    alert(response.message);
+                    window.location.href = "{% url 'customer-list' %}";
+                } else {
+                    alert("Error: " + response.message);
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                alert("Error occurred while saving customer.");
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

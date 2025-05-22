@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from order.models import Order
-from customer.models import Customer
+# from order.models import Order
+# from customer.models import Customer
 from django.http import JsonResponse
 
 def order_list(request):

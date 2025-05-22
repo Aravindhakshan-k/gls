@@ -1,493 +1,175 @@
 {% extends "includes/base.html" %}
 {% load static %}
- {% block body_content %}
- <div class="nk-content nk-content-fluid">
-            <div class="container-xl wide-xl">
-              <div class="nk-content-body">
-                <div class="nk-block-head nk-block-head-sm">
-                  <div class="nk-block-between">
-                    <div class="nk-block-head-content">
-                      <h3 class="nk-block-title page-title">Customers List</h3>
-                    </div>
-                    <div class="nk-block-head-content">
-                      <div class="toggle-wrap nk-block-tools-toggle">
-                        <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu">
-                          <em class="icon ni ni-menu-alt-r"></em>
-                        </a>
-                        <div class="toggle-expand-content" data-content="pageMenu">
-                          <ul class="nk-block-tools g-3">
-                            <li>
-                              <a href="#" class="btn btn-white btn-outline-light">
-                                <em class="icon ni ni-download-cloud"></em>
-                                <span>Export</span>
-                              </a>
-                            </li>
-                            <li class="nk-block-tools-opt">
-                            <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#customermodalForm">
-                                <em class="icon ni ni-plus"></em>
-                            </button>
-                            </li>
-                          </ul>
-                        </div>
+
+{% block extra_css %}
+<!-- Add any extra CSS specific to this page -->
+{% endblock %}
+
+{% block body_content %}
+<div class="nk-content nk-content-fluid">
+  <div class="container-xl wide-xl">
+    <div class="nk-content-body">
+      <div class="nk-block-head nk-block-head-sm">
+        <div class="nk-block-between">
+          <div class="nk-block-head-content">
+            <h3 class="nk-block-title page-title">Customers List</h3>
+          </div>
+          <div class="nk-block-head-content">
+            <div class="toggle-wrap nk-block-tools-toggle">
+              <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu">
+                <em class="icon ni ni-menu-alt-r"></em>
+              </a>
+              <div class="toggle-expand-content" data-content="pageMenu">
+                <ul class="nk-block-tools g-3">
+                  <li>
+                    <div class="drodown">
+                      <a href="#" class="btn btn-white btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">
+                        <em class="icon ni ni-download-cloud"></em><span>Export</span>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <ul class="link-list-opt no-bdr">
+                          <li><a href="#" id="export-csv"><em class="icon ni ni-file-csv"></em><span>Export CSV</span></a></li>
+                          <li><a href="#" id="export-excel"><em class="icon ni ni-file-excel"></em><span>Export Excel</span></a></li>
+                          <li><a href="#" id="export-pdf"><em class="icon ni ni-file-pdf"></em><span>Export PDF</span></a></li>
+                        </ul>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="nk-block">
-                  <div class="card card-stretch">
-                    <div class="card-inner-group">
-                      <div class="card-inner position-relative card-tools-toggle">
-                        <div class="card-title-group">
-                          <div class="card-tools">
-                            <div class="form-inline flex-nowrap gx-3">
-                              <div class="form-wrap w-150px">
-                                <select class="form-select js-select2" data-search="off" data-placeholder="Bulk Action">
-                                  <option value="">Bulk Action</option>
-                                  <option value="email">Send Email</option>
-                                  <option value="suspend">Suspend</option>
-                                  <option value="delete">Delete</option>
-                                </select>
-                              </div>
-                              <div class="btn-wrap">
-                                <span class="d-none d-md-block">
-                                  <button class="btn btn-dim btn-outline-light disabled">Apply</button>
-                                </span>
-                                <span class="d-md-none">
-                                  <button class="btn btn-dim btn-outline-light btn-icon disabled">
-                                    <em class="icon ni ni-arrow-right"></em>
-                                  </button>
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="card-tools me-n1">
-                            <ul class="btn-toolbar gx-1">
-                              <li>
-                                <a href="#" class="btn btn-icon search-toggle toggle-search" data-target="search">
-                                  <em class="icon ni ni-search"></em>
-                                </a>
-                              </li>
-                              <li class="btn-toolbar-sep"></li>
-                              <li>
-                                <div class="toggle-wrap">
-                                  <a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools">
-                                    <em class="icon ni ni-menu-right"></em>
-                                  </a>
-                                  <div class="toggle-content" data-content="cardTools">
-                                    <ul class="btn-toolbar gx-1">
-                                      <li class="toggle-close">
-                                        <a href="#" class="btn btn-icon btn-trigger toggle" data-target="cardTools">
-                                          <em class="icon ni ni-arrow-left"></em>
-                                        </a>
-                                      </li>
-                                      <li>
-                                        <div class="dropdown">
-                                          <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown">
-                                            <div class="dot dot-primary"></div>
-                                            <em class="icon ni ni-filter-alt"></em>
-                                          </a>
-                                          <div class="filter-wg dropdown-menu dropdown-menu-xl dropdown-menu-end">
-                                            <div class="dropdown-head">
-                                              <span class="sub-title dropdown-title">Filter Customers</span>
-                                            </div>
-                                            <div class="dropdown-body dropdown-body-rg">
-                                              <div class="row gx-6 gy-3">
-                                                <div class="col-6">
-                                                  <div class="custom-control custom-control-sm custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="hasBalance">
-                                                    <label class="custom-control-label" for="hasBalance"> Have Balance</label>
-                                                  </div>
-                                                </div>
-                                                <div class="col-6">
-                                                  <div class="custom-control custom-control-sm custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="hasKYC">
-                                                    <label class="custom-control-label" for="hasKYC"> KYC Verified</label>
-                                                  </div>
-                                                </div>
-                                                <div class="col-6">
-                                                  <div class="form-group">
-                                                    <label class="overline-title overline-title-alt">Card Type</label>
-                                                    <select class="form-select js-select2">
-                                                      <option value="any">Any Card</option>
-                                                      <option value="Visa">Visa</option>
-                                                      <option value="Mastercard">Mastercard</option>
-                                                      <option value="AmericanExpress">American Express</option>
-                                                    </select>
-                                                  </div>
-                                                </div>
-                                                <div class="col-6">
-                                                  <div class="form-group">
-                                                    <label class="overline-title overline-title-alt">Status</label>
-                                                    <select class="form-select js-select2">
-                                                      <option value="any">Any Status</option>
-                                                      <option value="new">New</option>
-                                                      <option value="active">Active</option>
-                                                      <option value="suspend">Suspend</option>
-                                                      <option value="deleted">Deleted</option>
-                                                    </select>
-                                                  </div>
-                                                </div>
-                                                <div class="col-12">
-                                                  <div class="form-group">
-                                                    <button type="button" class="btn btn-secondary">Filter</button>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div class="dropdown-foot between">
-                                              <a class="clickable" href="#">Reset Filter</a>
-                                              <a href="#">Save Filter</a>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </li>
-                                      <li>
-                                        <div class="dropdown">
-                                          <a href="#" class="btn btn-trigger btn-icon dropdown-toggle" data-bs-toggle="dropdown">
-                                            <em class="icon ni ni-setting"></em>
-                                          </a>
-                                          <div class="dropdown-menu dropdown-menu-xs dropdown-menu-end">
-                                            <ul class="link-check">
-                                              <li>
-                                                <span>Show</span>
-                                              </li>
-                                              <li class="active">
-                                                <a href="#">10</a>
-                                              </li>
-                                              <li>
-                                                <a href="#">20</a>
-                                              </li>
-                                              <li>
-                                                <a href="#">50</a>
-                                              </li>
-                                            </ul>
-                                            <ul class="link-check">
-                                              <li>
-                                                <span>Order</span>
-                                              </li>
-                                              <li class="active">
-                                                <a href="#">DESC</a>
-                                              </li>
-                                              <li>
-                                                <a href="#">ASC</a>
-                                              </li>
-                                            </ul>
-                                          </div>
-                                        </div>
-                                      </li>
-                                    </ul>
-                                  </div>
-                                </div>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div class="card-search search-wrap" data-search="search">
-                          <div class="card-body">
-                            <div class="search-content">
-                              <a href="#" class="search-back btn btn-icon toggle-search" data-target="search">
-                                <em class="icon ni ni-arrow-left"></em>
-                              </a>
-                              <input type="text" class="form-control border-transparent form-focus-none" placeholder="Search by name">
-                              <button class="search-submit btn btn-icon">
-                                <em class="icon ni ni-search"></em>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-inner p-0">
-                        <div class="nk-tb-list nk-tb-ulist">
-                          <div class="nk-tb-item nk-tb-head">
-                            <div class="nk-tb-col nk-tb-col-check">
-                              <div class="custom-control custom-control-sm custom-checkbox notext">
-                                <input type="checkbox" class="custom-control-input" id="cid">
-                                <label class="custom-control-label" for="cid"></label>
-                              </div>
-                            </div>
-                            <div class="nk-tb-col">
-                              <span class="sub-text">Customer</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-sm">
-                              <span class="sub-text">Email</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                              <span class="sub-text">Phone</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                              <span class="sub-text">Address</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                              <span class="sub-text">Status</span>
-                            </div>
-                            <div class="nk-tb-col text-end">
-                              <span class="sub-text">Actions</span>
-                            </div>
-                          </div>
-                          {% for data in customers %}
-                          <div class="nk-tb-item">
-                            <div class="nk-tb-col nk-tb-col-check">
-                              <div class="custom-control custom-control-sm custom-checkbox notext">
-                                <input type="checkbox" class="custom-control-input" id="cid1">
-                                <label class="custom-control-label" for="cid1"></label>
-                              </div>
-                            </div>
-                            <div class="nk-tb-col">
-                              <a href="customer-details.html">
-                                <div class="user-card">
-                                  <div class="user-avatar xs bg-primary">
-                                    <span>{{ data.first_name|slice:":1" }}{{ data.last_name|slice:":1" }}</span>
-                                  </div>
-                                  <div class="user-name">
-                                    <span class="tb-lead">{{data.first_name}} {{data.last_name}} <span class="dot dot-success d-lg-none ms-1"></span>
-                                    </span>
-                                  </div>
-                                </div>
-                              </a>
-                            </div>
-                            <div class="nk-tb-col tb-col-sm">
-                              <span class="sub-text">{{data.email}}</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-md">
-                              <span class="sub-text">{{data.phone_number}}</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                              <span class="sub-text">{{data.address}}</span>
-                            </div>
-                            <div class="nk-tb-col tb-col-lg">
-                              {% if data.is_active == 1 %}
-                              <span class="tb-status text-success">Active</span>
-                              {% else %}
-                              <span class="tb-status text-danger">Inactive</span>
-                              {% endif %}
-                            </div>
-                            <div class="nk-tb-col nk-tb-col-tools">
-                              <ul class="nk-tb-actions gx-1">
-                                <li class="nk-tb-action-hidden">
-                                  <a href="#" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Details">
-                                    <em class="icon ni ni-eye-fill"></em>
-                                  </a>
-                                </li>
-                                <li class="nk-tb-action-hidden">
-                                  <a href="#" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Send Email">
-                                    <em class="icon ni ni-mail-fill"></em>
-                                  </a>
-                                </li>
-                                <li class="nk-tb-action-hidden">
-                                  <a href="#" class="btn btn-trigger btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Suspend">
-                                    <em class="icon ni ni-cross-fill-c"></em>
-                                  </a>
-                                </li>
-                                <li>
-                                  <div class="drodown">
-                                    <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown">
-                                      <em class="icon ni ni-more-h"></em>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end">
-                                      <ul class="link-list-opt no-bdr">
-                                        <li>
-                                          <a href="#">
-                                            <em class="icon ni ni-eye"></em>
-                                            <span>View Details</span>
-                                          </a>
-                                        </li>
-                                        <li>
-                                          <a href="#">
-                                            <em class="icon ni ni-mail"></em>
-                                            <span>Send Mail</span>
-                                          </a>
-                                        </li>
-                                        <li>
-                                          <a href="#">
-                                            <em class="icon ni ni-cart"></em>
-                                            <span>Orders</span>
-                                          </a>
-                                        </li>
-                                        <li>
-                                          <a href="#">
-                                            <em class="icon ni ni-na"></em>
-                                            <span>Suspend</span>
-                                          </a>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                          {% endfor %}
-                        </div>
-                      </div>
-                      <div class="card-inner">
-                        <div class="nk-block-between-md g-3">
-                          <div class="g">
-                            <ul class="pagination justify-content-center justify-content-md-start">
-                              <li class="page-item">
-                                <a class="page-link" href="#">Prev</a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="#">1</a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="#">2</a>
-                              </li>
-                              <li class="page-item">
-                                <span class="page-link">
-                                  <em class="icon ni ni-more-h"></em>
-                                </span>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="#">6</a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="#">7</a>
-                              </li>
-                              <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
-                              </li>
-                            </ul>
-                          </div>
-                          <div class="g">
-                            <div class="pagination-goto d-flex justify-content-center justify-content-md-start gx-3">
-                              <div>Page</div>
-                              <div>
-                                <select class="form-select js-select2" data-search="on" data-dropdown="xs center">
-                                  <option value="page-1">1</option>
-                                  <option value="page-2">2</option>
-                                  <option value="page-4">4</option>
-                                  <option value="page-5">5</option>
-                                  <option value="page-6">6</option>
-                                  <option value="page-7">7</option>
-                                  <option value="page-8">8</option>
-                                  <option value="page-9">9</option>
-                                  <option value="page-10">10</option>
-                                  <option value="page-11">11</option>
-                                  <option value="page-12">12</option>
-                                  <option value="page-13">13</option>
-                                  <option value="page-14">14</option>
-                                  <option value="page-15">15</option>
-                                  <option value="page-16">16</option>
-                                  <option value="page-17">17</option>
-                                  <option value="page-18">18</option>
-                                  <option value="page-19">19</option>
-                                  <option value="page-20">20</option>
-                                </select>
-                              </div>
-                              <div>OF 102</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  </li>
+                  <li class="nk-block-tools-opt">
+                    <a href="{% url 'add_customer' %}" class="btn btn-primary">
+                      <em class="icon ni ni-plus"></em><span>Add Customer</span>
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
-
-          <div class="modal fade" id="customermodalForm">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Customer Info</h5>
-                    <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <em class="icon ni ni-cross"></em>
+        </div>
+      </div>
+      <div class="nk-block">
+        <div class="card card-stretch">
+          <div class="card-inner">
+            <table id="customerTable" class="datatable-init table" style="width:100%">
+              <thead>
+                <tr>
+                  <th><div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="selectAll">
+                    <label class="custom-control-label" for="selectAll"></label>
+                  </div></th>
+                  <th>Customer</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Address</th>
+                  <th>Status</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for customer in customers %}
+                <tr>
+                  <td>
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="cid{{ customer.id }}">
+                      <label class="custom-control-label" for="cid{{ customer.id }}"></label>
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#">
+                      <div class="user-card">
+                        <div class="user-avatar xs bg-primary">
+                          <span>{{ customer.name|slice:":2" }}</span>
+                        </div>
+                        <div class="user-name">
+                          <span class="tb-lead">{{ customer.name }}</span>
+                        </div>
+                      </div>
                     </a>
-                </div>
-                <div class="modal-body">
-                    <form class="form-validate is-alter" id="customeraddform" method="POST">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label class="form-label" for="first_name">First Name</label>
-                        <div class="form-control-wrap">
-                        <input type="text" class="form-control" name="first_name" id="first_name" required>
-                        </div>
+                  </td>
+                  <td>{{ customer.email }}</td>
+                  <td>{{ customer.mobile_number }}</td>
+                  <td>{{ customer.address }}</td>
+                  <td>
+                    {% if customer.is_active %}
+                    <span class="badge badge-success">Active</span>
+                    {% else %}
+                    <span class="badge badge-danger">Inactive</span>
+                    {% endif %}
+                  </td>
+                  <td class="text-end">
+                    <div class="dropdown">
+                      <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown">
+                        <em class="icon ni ni-more-h"></em>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <ul class="link-list-opt no-bdr">
+                          <li>
+                            <a href="{% url 'view_customer' customer.id %}">
+                              <em class="icon ni ni-eye"></em><span>View Details</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="{% url 'edit_customer' customer.id %}">
+                              <em class="icon ni ni-edit"></em><span>Edit</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#" class="delete-customer" data-id="{{ customer.id }}">
+                              <em class="icon ni ni-trash"></em><span>Delete</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label" for="last_name">Last Name</label>
-                        <div class="form-control-wrap">
-                        <input type="text" class="form-control" name="last_name" id="last_name" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="email">Email address</label>
-                        <div class="form-control-wrap">
-                        <input type="email" class="form-control" name="email" id="email" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="phone_number">Phone No</label>
-                        <div class="form-control-wrap">
-                        <input type="number" class="form-control" name="phone_number" id="phone_number">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="address">Address</label>
-                        <div class="form-control-wrap">
-                        <input type="text" class="form-control" name="address" id="address">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-lg btn-primary">Save Customer</button>
-                    </div>
-                    </form>
-                </div>
-                </div>
-            </div>
-            </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteCustomerModal" tabindex="-1" role="dialog" aria-labelledby="deleteCustomerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteCustomerModalLabel">Confirm Delete</h5>
+        <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <em class="icon ni ni-cross"></em>
+        </a>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this customer? This action cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</a>
+        <a href="#" id="confirmDelete" class="btn btn-danger">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CSRF Token for AJAX requests -->
+{% csrf_token %}
 {% endblock %}
 
 {% block foot_script %}
+<!-- Include the common DataTable initialization JS -->
+<script src="{% static 'js/common/datatable-init.js' %}"></script>
 <script>
-$("#customeraddform").validate({
-    rules: {
-        email: {
-            required: true
-        },
-    },
-    messages: {
-        email: {
-            required: "Please enter email address",
-        },
-    },
-  submitHandler: function(form) {
-    var data = new FormData($('form').get(0));
-    $.ajax({
-        url: '/customer/ajax-add-customer',
-        data: data,
-        cache: false,
-        processData: false,
-        contentType: false,
-        method: 'POST',
-        dataType: 'json',
-        beforeSend: function() {
-        $(".page_loading").show();
-        },
-        success: function (data) {
-            $(".page_loading").hide();
-
-            toastr.options = {
-                "closeButton": true,
-                "progressBar": true,
-                "positionClass": "toast-top-right", 
-                "timeOut": "5000",
-                "extendedTimeOut": "1000"
-            };
-
-            if(data['status']=="success") {
-              toastr.success(data['message'], "Success");
-                setTimeout(function() {
-                    window.location.href = "/customer/customer-list";
-                }, 1500);
-            } else {
-              toastr.error(data['message'], "Error");
-              } 
-        }
+  $(document).ready(function() {
+    // Initialize the customer datatable using our common function
+    initializeCustomerDataTable('#customerTable', {
+      // Any customer table specific options can be added here
+      searchPlaceholder: "Search customers..."
     });
-    return false;
-  }
-});
-
+    
+    // Set up the delete functionality
+    setupCustomerDeleteHandler("{% url 'ajax_delete_customer' %}");
+  });
 </script>
 {% endblock %}
