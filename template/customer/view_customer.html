@@ -1,0 +1,352 @@
+{% extends "includes/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .customer-info-section {
+        margin-bottom: 1.5rem;
+    }
+    .customer-info-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #dbdfea;
+        color: #364a63;
+    }
+    .customer-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background-color: #f5f6fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: #fff;
+        margin-bottom: 1rem;
+    }
+    .customer-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .info-item {
+        margin-bottom: 0.75rem;
+    }
+    .info-label {
+        font-size: 0.875rem;
+        color: #8094ae;
+        margin-bottom: 0.25rem;
+    }
+    .info-value {
+        font-size: 1rem;
+        color: #364a63;
+    }
+</style>
+{% endblock %}
+
+{% block body_content %}
+<div class="nk-content">
+    <div class="container-fluid">
+        <div class="nk-content-inner">
+            <div class="nk-content-body">
+                <div class="nk-block-head nk-block-head-sm">
+                    <div class="nk-block-between">
+                        <div class="nk-block-head-content">
+                            <h3 class="nk-block-title page-title">Customer Details</h3>
+                        </div>
+                        <div class="nk-block-head-content">
+                            <div class="toggle-wrap nk-block-tools-toggle">
+                                <a href="#" class="btn btn-icon btn-trigger toggle-expand me-n1" data-target="pageMenu">
+                                    <em class="icon ni ni-menu-alt-r"></em>
+                                </a>
+                                <div class="toggle-expand-content" data-content="pageMenu">
+                                    <ul class="nk-block-tools g-3">
+                                        <li>
+                                            <a href="{% url 'edit_customer' customer.id %}" class="btn btn-outline-light btn-white">
+                                                <em class="icon ni ni-edit"></em><span>Edit</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'customer-list' %}" class="btn btn-outline-light">
+                                                <em class="icon ni ni-arrow-left"></em><span>Back</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="nk-block">
+                    <div class="row g-gs">
+                        <!-- Customer Profile -->
+                        <div class="col-lg-4">
+                            <div class="card card-bordered">
+                                <div class="card-inner">
+                                    <div class="text-center">
+                                        <div class="customer-avatar mx-auto bg-primary">
+                                            {% if customer.customer_image %}
+                                                <img src="{{ customer.customer_image.url }}" alt="{{ customer.name }}">
+                                            {% else %}
+                                                <span>{{ customer.name|slice:":2" }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <h4 class="title mb-1">{{ customer.name }}</h4>
+                                        {% if customer.print_name and customer.print_name != customer.name %}
+                                        <p class="text-soft">{{ customer.print_name }}</p>
+                                        {% endif %}
+                                        
+                                        <div class="mt-3">
+                                            {% if customer.is_active %}
+                                            <span class="badge badge-dim bg-success">Active</span>
+                                            {% else %}
+                                            <span class="badge badge-dim bg-danger">Inactive</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="customer-info-section mt-4">
+                                        <div class="customer-info-title">Contact Information</div>
+                                        
+                                        {% if customer.email %}
+                                        <div class="info-item">
+                                            <div class="info-label">Email</div>
+                                            <div class="info-value">{{ customer.email }}</div>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        {% if customer.mobile_number %}
+                                        <div class="info-item">
+                                            <div class="info-label">Mobile</div>
+                                            <div class="info-value">{{ customer.mobile_number }}</div>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        {% if customer.alternate_number %}
+                                        <div class="info-item">
+                                            <div class="info-label">Alternate Number</div>
+                                            <div class="info-value">{{ customer.alternate_number }}</div>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        {% if customer.whatsapp_number %}
+                                        <div class="info-item">
+                                            <div class="info-label">WhatsApp</div>
+                                            <div class="info-value">{{ customer.whatsapp_number }}</div>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        {% if customer.contact_person_name %}
+                                        <div class="info-item">
+                                            <div class="info-label">Contact Person</div>
+                                            <div class="info-value">{{ customer.contact_person_name }}</div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    
+                                    {% if customer.dob or customer.anniversary_date %}
+                                    <div class="customer-info-section">
+                                        <div class="customer-info-title">Personal Dates</div>
+                                        
+                                        {% if customer.dob %}
+                                        <div class="info-item">
+                                            <div class="info-label">Date of Birth</div>
+                                            <div class="info-value">{{ customer.dob }}</div>
+                                        </div>
+                                        {% endif %}
+                                        
+                                        {% if customer.anniversary_date %}
+                                        <div class="info-item">
+                                            <div class="info-label">Anniversary</div>
+                                            <div class="info-value">{{ customer.anniversary_date }}</div>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Customer Details -->
+                        <div class="col-lg-8">
+                            <div class="card card-bordered">
+                                <div class="card-inner">
+                                    <div class="customer-info-section">
+                                        <div class="customer-info-title">Business Details</div>
+                                        <div class="row g-3">
+                                            {% if customer.business_type %}
+                                            <div class="col-md-6">
+                                                <div class="info-item">
+                                                    <div class="info-label">Business Type</div>
+                                                    <div class="info-value">{{ customer.business_type }}</div>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            
+                                            {% if customer.customer_number %}
+                                            <div class="col-md-6">
+                                                <div class="info-item">
+                                                    <div class="info-label">Customer Number</div>
+                                                    <div class="info-value">{{ customer.customer_number }}</div>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            
+                                            {% if customer.customer_group %}
+                                            <div class="col-md-6">
+                                                <div class="info-item">
+                                                    <div class="info-label">Customer Group</div>
+                                                    <div class="info-value">{{ customer.customer_group }}</div>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                            
+                                            {% if customer.team %}
+                                            <div class="col-md-6">
+                                                <div class="info-item">
+                                                    <div class="info-label">Team</div>
+                                                    <div class="info-value">{{ customer.team }}</div>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="customer-info-section">
+                                        <div class="customer-info-title">Address</div>
+                                        <div class="row g-3">
+                                            {% if customer.address %}
+                                            <div class="col-12">
+                                                <div class="info-item">
+                                                    <div class="info-label">Full Address</div>
+                                                    <div class="info-value">
+                                                        {% if customer.door_no %}{{ customer.door_no }}, {% endif %}
+                                                        {{ customer.address }}
+                                                        {% if customer.area %}, {{ customer.area }}{% endif %}
+                                                        {% if customer.city %}, {{ customer.city }}{% endif %}
+                                                        {% if customer.district %}, {{ customer.district }}{% endif %}
+                                                        {% if customer.state %}, {{ customer.state }}{% endif %}
+                                                        {% if customer.pincode %} - {{ customer.pincode }}{% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% else %}
+                                            <div class="col-md-6">
+                                                {% if customer.door_no %}
+                                                <div class="info-item">
+                                                    <div class="info-label">Door No</div>
+                                                    <div class="info-value">{{ customer.door_no }}</div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {% if customer.area %}
+                                                <div class="info-item">
+                                                    <div class="info-label">Area</div>
+                                                    <div class="info-value">{{ customer.area }}</div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {% if customer.city %}
+                                                <div class="info-item">
+                                                    <div class="info-label">City</div>
+                                                    <div class="info-value">{{ customer.city }}</div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {% if customer.district %}
+                                                <div class="info-item">
+                                                    <div class="info-label">District</div>
+                                                    <div class="info-value">{{ customer.district }}</div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {% if customer.state %}
+                                                <div class="info-item">
+                                                    <div class="info-label">State</div>
+                                                    <div class="info-value">{{ customer.state }}</div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6">
+                                                {% if customer.pincode %}
+                                                <div class="info-item">
+                                                    <div class="info-label">Pincode</div>
+                                                    <div class="info-value">{{ customer.pincode }}</div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    
+                                    {% if customer.remarks %}
+                                    <div class="customer-info-section">
+                                        <div class="customer-info-title">Additional Information</div>
+                                        <div class="info-item">
+                                            <div class="info-label">Remarks</div>
+                                            <div class="info-value">{{ customer.remarks }}</div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    <!-- Transaction History Section - Placeholder for future implementation -->
+                                    <div class="customer-info-section">
+                                        <div class="customer-info-title d-flex justify-content-between align-items-center">
+                                            <span>Recent Transactions</span>
+                                            <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                                        </div>
+                                        
+                                        <table class="table table-transactions">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Reference</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- If you have transaction data, loop through it here -->
+                                                {% if transactions %}
+                                                    {% for transaction in transactions %}
+                                                    <tr>
+                                                        <td>{{ transaction.date }}</td>
+                                                        <td>{{ transaction.reference }}</td>
+                                                        <td>{{ transaction.amount }}</td>
+                                                        <td>{{ transaction.status }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <tr>
+                                                        <td colspan="4" class="text-center">No transactions found</td>
+                                                    </tr>
+                                                {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block foot_script %}
+<script>
+$(document).ready(function() {
+    // Any customer view-specific JavaScript can go here
+});
+</script>
+{% endblock %} 

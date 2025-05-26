@@ -39,5 +39,11 @@ class Account(models.Model):
     opening_balance_pure_weight = models.DecimalField(max_digits=12, decimal_places=3, blank=True, null=True)
     opening_balance_pure_weight_crdr = models.CharField(max_length=2, choices=[('CR', 'Credit'), ('DR', 'Debit')], blank=True, null=True)
 
+    # Additional Info
+    created_by = models.CharField(max_length=100, blank=True, null=True)
+    created_on = models.DateTimeField(auto_now_add=True)    
+    updated_by = models.CharField(max_length=100, blank=True, null=True)
+    updated_on = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.name
