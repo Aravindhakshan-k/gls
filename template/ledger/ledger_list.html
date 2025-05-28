@@ -32,7 +32,7 @@
                     </div>
                   </li>
                   <li class="nk-block-tools-opt">
-                    <a href="{% url 'add_ledger' %}" class="btn btn-primary">
+                    <a href="{% url 'create-ledger' %}" class="btn btn-primary">
                       <em class="icon ni ni-plus"></em><span>Add Ledger</span>
                     </a>
                   </li>
@@ -70,7 +70,7 @@
                     </div>
                   </td>
                   <td>
-                    <a href="{% url 'view_ledger' ledger.id %}">
+                    <a href="#">
                       <span class="tb-lead">{{ ledger.name }}</span>
                     </a>
                   </td>
@@ -94,17 +94,17 @@
                       <div class="dropdown-menu dropdown-menu-end">
                         <ul class="link-list-opt no-bdr">
                           <li>
-                            <a href="{% url 'view_ledger' ledger.id %}">
+                            <a href="#">
                               <em class="icon ni ni-eye"></em><span>View Details</span>
                             </a>
                           </li>
                           <li>
-                            <a href="{% url 'edit_ledger' ledger.id %}">
+                            <a href="#">
                               <em class="icon ni ni-edit"></em><span>Edit</span>
                             </a>
                           </li>
                           <li>
-                            <a href="{% url 'ledger_transactions' ledger.id %}">
+                            <a href="#">
                               <em class="icon ni ni-repeat"></em><span>Transactions</span>
                             </a>
                           </li>
@@ -158,15 +158,19 @@
 <script src="{% static 'js/common/datatable-init.js' %}"></script>
 <script>
   $(document).ready(function() {
-    // Initialize the ledger datatable using our common function
-    var table = initializeDataTable('#ledgerTable', {
-      // Any ledger table specific options
-      searchPlaceholder: "Search ledgers...",
-      columnDefs: [
-        { orderable: false, targets: [0, 6] },
-        { type: "num-fmt", targets: 3 }
-      ]
-    });
+    // Prevent DataTable reinitialization
+    if (!$.fn.DataTable.isDataTable('#ledgerTable')) {
+      var table = initializeDataTable('#ledgerTable', {
+        // Any ledger table specific options
+        searchPlaceholder: "Search ledgers...",
+        columnDefs: [
+          { orderable: false, targets: [0, 6] },
+          { type: "num-fmt", targets: 3 }
+        ]
+      });
+    } else {
+      var table = $('#ledgerTable').DataTable();
+    }
     
     // Select All checkbox
     $("#selectAll").on("click", function() {
@@ -206,7 +210,7 @@
       var ledgerId = $(this).data('id');
       
       $.ajax({
-        url: "{% url 'ajax_delete_ledger' %}",
+        url: "#",
         type: "POST",
         data: {
           'ledger_id': ledgerId,
@@ -232,4 +236,4 @@
     });
   });
 </script>
-{% endblock %} 
+{% endblock %}

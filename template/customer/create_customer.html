@@ -1,9 +1,6 @@
 {% extends "includes/base.html" %}
 {% load static %}
 
-{% block extra_css %}
-{% endblock %}
-
 {% block body_content %}
 <div class="nk-content">
     <div class="container-fluid">
@@ -32,9 +29,7 @@
                                     </div>
 
                                     <!-- Core Info -->
-                                    <div class="form-group">
                                         <input type="hidden" class="form-control" name="account_type" value="customer" required>
-                                    </div>
                                     
                                     <!-- Main Info -->
                                     <div class="col-lg-4">
@@ -165,16 +160,17 @@
                                             <input type="date" class="form-control" name="anniversary_date">
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-8">
                                         <div class="form-group">
                                             <label class="form-label">Remarks</label>
-                                            <textarea class="form-control" name="remarks"></textarea>
+                                            <textarea class="form-control" name="remarks" rows="1"></textarea>
                                         </div>
                                     </div>
                                     
                                     <div class="col-12">
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary float-end">Save Customer</button>
+                                            <a href="{% url 'customer-list' %}" class="btn btn-secondary float-end me-2">Cancel</a>
                                         </div>
                                     </div>
                                 </div>

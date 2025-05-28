@@ -1,23 +1,6 @@
 {% extends "includes/base.html" %}
 {% load static %}
 
-{% block extra_css %}
-<style>
-    .form-section-title {
-        font-size: 1rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        padding-bottom: 0.5rem;
-        border-bottom: 1px solid #dbdfea;
-        color: #364a63;
-    }
-    .required-field::after {
-        content: " *";
-        color: #e85347;
-    }
-</style>
-{% endblock %}
-
 {% block body_content %}
 <div class="nk-content">
     <div class="container-fluid">
@@ -28,214 +11,135 @@
                         <div class="nk-block-head-content">
                             <h3 class="nk-block-title page-title">Create Ledger</h3>
                         </div>
-                        <div class="nk-block-head-content">
-                            <a href="{% url 'ledger-list' %}" class="btn btn-outline-light">
-                                <em class="icon ni ni-arrow-left"></em><span>Back to List</span>
-                            </a>
-                        </div>
                     </div>
                 </div>
                 <div class="nk-block">
                     <div class="card">
                         <div class="card-inner">
-                            <form id="ledgerForm">
+                            <form method="post">
                                 {% csrf_token %}
+
+                                  <input type="hidden" class="form-control" name="account_type" value="ledger" required>
                                 
                                 <div class="row g-4">
-                                    <div class="col-12">
-                                        <h5 class="form-section-title">Basic Information</h5>
-                                    </div>
-                                    
-                                    <!-- Basic Info -->
+                                    <!-- First Column Fields -->
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-label required-field">Ledger Name</label>
-                                            <input type="text" class="form-control" name="name" required>
+                                            <label class="form-label">Ledger Name</label>
+                                            <input type="text" class="form-control" name="ledger_name" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-label">Print Name</label>
-                                            <input type="text" class="form-control" name="print_name">
+                                            <input type="text" class="form-control" name="print_name" required>
                                         </div>
                                     </div>
-                                    
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-label required-field">Ledger Group</label>
-                                            <select class="form-select" name="ledger_group" required>
-                                                <option value="">Select Ledger Group</option>
-                                                <option value="assets">Assets</option>
-                                                <option value="liabilities">Liabilities</option>
-                                                <option value="income">Income</option>
-                                                <option value="expenses">Expenses</option>
-                                                <option value="capital">Capital</option>
+                                            <label class="form-label">Parent Group</label>
+                                            <select class="form-control" name="parent_group" required>
+                                                <option value="">Select Group</option>
+                                                <!-- Add group options dynamically -->
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-label">Opening Balance</label>
-                                            <div class="form-control-wrap">
-                                                <div class="input-group">
-                                                    <input type="number" step="0.01" class="form-control" name="opening_balance_amount">
-                                                    <div class="input-group-append">
-                                                        <select class="form-select" name="opening_balance_type">
-                                                            <option value="debit">Dr</option>
-                                                            <option value="credit">Cr</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-12">
-                                        <h5 class="form-section-title">Contact Information</h5>
-                                    </div>
-                                    
-                                    <!-- Contact Information -->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Contact Person</label>
-                                            <input type="text" class="form-control" name="contact_person_name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Phone Number</label>
-                                            <input type="text" class="form-control" name="phone_number">
+                                            <label class="form-label">Team</label>
+                                            <select class="form-control" name="team">
+                                                <option value="">Select Team</option>
+                                                <!-- Add team options dynamically -->
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-label">Mobile Number</label>
-                                            <input type="text" class="form-control" name="mobile_number">
+                                            <input type="tel" class="form-control" name="mobile" pattern="[0-9]{10}" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Email</label>
-                                            <input type="email" class="form-control" name="email">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-12">
-                                        <h5 class="form-section-title">Address</h5>
-                                    </div>
-                                    
-                                    <!-- Address -->
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label class="form-label">Door No</label>
-                                            <input type="text" class="form-control" name="door_no">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-8">
-                                        <div class="form-group">
-                                            <label class="form-label">Address</label>
-                                            <input type="text" class="form-control" name="address">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
                                         <div class="form-group">
                                             <label class="form-label">City</label>
-                                            <input type="text" class="form-control" name="city">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label class="form-label">State</label>
-                                            <input type="text" class="form-control" name="state">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label class="form-label">Pincode</label>
-                                            <input type="text" class="form-control" name="pincode">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-12">
-                                        <h5 class="form-section-title">Tax Information</h5>
-                                    </div>
-                                    
-                                    <!-- Tax Information -->
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-label">GST Registration Type</label>
-                                            <select class="form-select" name="gst_registration_type">
-                                                <option value="">Select Registration Type</option>
-                                                <option value="regular">Regular</option>
-                                                <option value="composition">Composition</option>
-                                                <option value="unregistered">Unregistered</option>
-                                                <option value="consumer">Consumer</option>
-                                            </select>
+                                            <input type="text" class="form-control" name="city" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-label">GSTIN/UIN</label>
-                                            <input type="text" class="form-control" name="gst_no">
+                                            <label class="form-label">Area</label>
+                                            <input type="text" class="form-control" name="area" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Second Column Fields -->
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Business Type</label>
+                                            <input type="text" class="form-control" name="business_type" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">GST Number</label>
+                                            <input type="text" class="form-control" name="gst_no" pattern="[0-9A-Z]{15}" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label class="form-label">PAN Number</label>
-                                            <input type="text" class="form-control" name="pan_number">
+                                            <input type="text" class="form-control" name="pan_no" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-label">TDS Applicable</label>
-                                            <div class="custom-control custom-switch">
-                                                <input type="checkbox" class="custom-control-input" id="tdsApplicable" name="tds_applicable" value="1">
-                                                <label class="custom-control-label" for="tdsApplicable">Yes</label>
-                                            </div>
+                                            <label class="form-label">Address</label>
+                                            <textarea class="form-control" name="address" rows="2" required></textarea>
                                         </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Pincode</label>
+                                            <input type="number" class="form-control" name="pincode" pattern="[0-9]{6}" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="form-label">State</label>
+                                            <input type="text" class="form-control" name="state" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Opening Balance Fields -->
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-label">Opening Balance (Amount)</label>
+                                        <div class="input-group">
+                                          <input type="number" class="form-control" name="opening_balance_amount" step="0.01">
+                                          <select class="form-select" name="amount_cr_dr" style="max-width: 150px;">
+                                            <option value="cr">CREDIT</option>
+                                            <option value="dr">DEBIT</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <div class="form-group">
+                                        <label class="form-label">Opening Balance (Pure Weight)</label>
+                                        <div class="input-group">
+                                          <input type="number" class="form-control" name="opening_balance_weight" step="0.001">
+                                          <select class="form-select" name="weight_cr_dr" style="max-width: 150px;">
+                                            <option value="cr">CREDIT</option>
+                                            <option value="dr">DEBIT</option>
+                                          </select>
+                                        </div>
+                                      </div>
                                     </div>
                                     
                                     <div class="col-12">
-                                        <h5 class="form-section-title">Bank Details</h5>
-                                    </div>
-                                    
-                                    <!-- Bank Details -->
-                                    <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label class="form-label">Bank Name</label>
-                                            <input type="text" class="form-control" name="bank_name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Account Number</label>
-                                            <input type="text" class="form-control" name="account_number">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-label">IFSC Code</label>
-                                            <input type="text" class="form-control" name="ifsc_code">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label class="form-label">Branch</label>
-                                            <input type="text" class="form-control" name="bank_branch">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Remarks</label>
-                                            <textarea class="form-control" name="remarks" rows="3"></textarea>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <button type="submit" class="btn btn-primary">Save Ledger</button>
-                                            <a href="{% url 'ledger-list' %}" class="btn btn-outline-light">Cancel</a>
+                                            <button type="submit" class="btn btn-primary float-end">Save Ledger</button>
+                                            <a href="{% url 'ledger-list' %}" class="btn btn-secondary float-end me-2">Cancel</a>
                                         </div>
                                     </div>
                                 </div>
@@ -249,41 +153,6 @@
 </div>
 {% endblock %}
 
-{% block foot_script %}
-<script>
-$(document).ready(function() {
-    // Form submission
-    $('#ledgerForm').on('submit', function(e) {
-        e.preventDefault();
-        
-        var formData = new FormData(this);
-        
-        $.ajax({
-            url: "{% url 'ajax_add_ledger' %}",
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if(response.status === "success") {
-                    alert(response.message);
-                    window.location.href = "{% url 'ledger-list' %}";
-                } else {
-                    alert("Error: " + response.message);
-                }
-            },
-            error: function(xhr, errmsg, err) {
-                alert("Error occurred while saving ledger.");
-            }
-        });
-    });
-
-    // Auto-fill print name based on ledger name
-    $('input[name="name"]').on('blur', function() {
-        if ($('input[name="print_name"]').val() === '') {
-            $('input[name="print_name"]').val($(this).val());
-        }
-    });
-});
-</script>
-{% endblock %} 
+{% block extra_js %}
+<script src="{% static 'js/common/form-validation.js' %}"></script>
+{% endblock %}
