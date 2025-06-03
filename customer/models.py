@@ -40,6 +40,8 @@ class Account(models.Model):
     opening_balance_pure_weight_crdr = models.CharField(max_length=2, choices=[('CR', 'Credit'), ('DR', 'Debit')], blank=True, null=True)
 
     # Additional Info
+    status = models.BooleanField(default=True)
+    is_deleted = models.BooleanField(default=False)
     created_by = models.CharField(max_length=100, blank=True, null=True)
     created_on = models.DateTimeField(auto_now_add=True)    
     updated_by = models.CharField(max_length=100, blank=True, null=True)

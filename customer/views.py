@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 def customer_list(request):
-    customers = Account.objects.all()
+    customers = Account.objects.filter(is_deleted=False)
     return render(request, "customer/customer_list.html", {"customers": customers})
 
 def add_customer(request):

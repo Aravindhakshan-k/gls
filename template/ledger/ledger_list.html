@@ -53,10 +53,10 @@
                     <label class="custom-control-label" for="selectAll"></label>
                   </div></th>
                   <th>Ledger Name</th>
-                  <th>Group</th>
-                  <th>Current Balance</th>
                   <th>Contact</th>
                   <th>GSTIN</th>
+                  <th>Amount Balance</th>
+                  <th>Weight Balance</th>
                   <th class="text-end">Actions</th>
                 </tr>
               </thead>
@@ -71,21 +71,33 @@
                   </td>
                   <td>
                     <a href="#">
-                      <span class="tb-lead">{{ ledger.name }}</span>
+                      <span class="tb-lead">{{ ledger.name | title }}</span>
                     </a>
                   </td>
+                  <td>{{ ledger.mobile_number | default:'--' }}</td>
+                  <td>{{ ledger.gst_no | default:'--' }}</td>
                   <td>
-                    <span class="badge badge-dim bg-primary">{{ ledger.ledger_group|title }}</span>
-                  </td>
-                  <td>
-                    {% if ledger.current_balance_type == 'debit' %}
-                    <span class="tb-amount">{{ ledger.current_balance_amount }} <span class="currency">Dr</span></span>
+                    {% if ledger.opening_balance_amount %}
+                        {% if ledger.opening_balance_amount_crdr == 'cr' %}
+                            <span class="tb-amount text-success">{{ ledger.opening_balance_amount }} <span class="currency text-success">{{ ledger.opening_balance_amount_crdr }}</span></span>
+                        {% elif ledger.opening_balance_amount_crdr == 'dr' %}
+                            <span class="tb-amount text-danger">{{ ledger.opening_balance_amount }} <span class="currency text-danger">{{ ledger.opening_balance_amount_crdr }}</span></span>
+                        {% endif %}
                     {% else %}
-                    <span class="tb-amount">{{ ledger.current_balance_amount }} <span class="currency">Cr</span></span>
+                        <span class="tb-amount">--</span>
+                    {% endif %}
+                  </td>     
+                  <td>
+                    {% if ledger.opening_balance_pure_weight %}
+                        {% if ledger.opening_balance_pure_weight_crdr == 'cr' %}
+                            <span class="tb-amount text-success">{{ ledger.opening_balance_pure_weight }} <span class="currency text-success">{{ ledger.opening_balance_pure_weight_crdr }}</span></span>
+                        {% elif ledger.opening_balance_pure_weight_crdr == 'dr' %}
+                            <span class="tb-amount text-danger">{{ ledger.opening_balance_pure_weight }} <span class="currency text-danger">{{ ledger.opening_balance_pure_weight_crdr }}</span></span>
+                        {% endif %}
+                    {% else %}
+                        <span class="tb-amount">--</span>
                     {% endif %}
                   </td>
-                  <td>{{ ledger.mobile_number }}</td>
-                  <td>{{ ledger.gst_no }}</td>
                   <td class="text-end">
                     <div class="dropdown">
                       <a href="#" class="dropdown-toggle btn btn-icon btn-trigger" data-bs-toggle="dropdown">
