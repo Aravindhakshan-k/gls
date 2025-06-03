@@ -83,3 +83,10 @@ def ajax_add_customer(request):
     return JsonResponse(
         {"status": "error", "message": "Invalid request method"}, status=405
     )
+
+def view_customer(request, id):
+    try:
+        customer = Account.objects.get(id=id, is_deleted=False)
+        return render(request, "customer/view_customer.html", {"customer": customer})
+    except Account.DoesNotExist:
+        return render(request, "customer/customer_not_found.html", {"customer_id": id})

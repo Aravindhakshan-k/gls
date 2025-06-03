@@ -75,7 +75,7 @@
                     </div>
                   </td>
                   <td>
-                    <a href="#">
+                    <a href="{% url 'view_customer' customer.id %}">
                       <div class="user-card">
                         <div class="user-avatar xs bg-primary">
                           <span>{{ customer.name|slice:":2" }}</span>
@@ -104,7 +104,7 @@
                       <div class="dropdown-menu dropdown-menu-end">
                         <ul class="link-list-opt no-bdr">
                           <li>
-                            <a href="#">
+                            <a href="{% url 'view_customer' customer.id %}">
                               <em class="icon ni ni-eye"></em><span>View Details</span>
                             </a>
                           </li>

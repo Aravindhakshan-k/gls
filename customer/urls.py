@@ -6,4 +6,5 @@ urlpatterns = [
     path("customer-list", views.customer_list, name="customer-list"),
     path("add-customer", views.add_customer, name="add_customer"),
     path("ajax-add-customer", views.ajax_add_customer, name="ajax_add_customer"),
+    path("view-customer/<int:id>", views.view_customer, name="view_customer"),
 ]
